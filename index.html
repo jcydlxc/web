@@ -6,7 +6,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=no,minimal-ui"
     />
-    <title>DIY水印相机</title>
+    <title>青藤科技CRM客户管理系统</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
@@ -18,6 +18,61 @@
             height: 115vh;
             margin: 0;
             background-color: #f0f0f0;
+        }
+        #loginContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #loginHeader {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        .loginForm {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            gap: 10px;
+        }
+        .loginForm input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .loginForm button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .loginForm button:hover {
+            background-color: #45a049;
+        }
+        #mainContent {
+            display: none;
+        }
+        #accessLog {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        #accessLog th, #accessLog td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        #accessLog th {
+            background-color: #f2f2f2;
         }
         #videoContainer {
             position: relative;
@@ -64,6 +119,29 @@
     </style>
 </head>
 <body>
+    <!-- 登录界面 -->
+    <div id="loginContainer">
+        <div id="loginHeader" style="color: #2c3e50; margin-bottom: 30px;">
+            <span style="font-size: 28px;">青藤科技CRM客户管理系统</span>
+        </div>
+        <div class="loginForm" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 20px; border-radius: 8px; background-color: white;">
+            <div style="text-align: center; margin-bottom: 20px; color: #7f8c8d;">企业级客户关系管理解决方案</div>
+            <div style="text-align: left; margin-bottom: 5px;"><label for="username">账号</label></div>
+            <input type="text" id="username" placeholder="请输入用户名" style="margin-bottom: 15px;">
+            <div style="text-align: left; margin-bottom: 5px;"><label for="password">密码</label></div>
+            <input type="password" id="password" placeholder="请输入密码" style="margin-bottom: 15px;">
+            <button id="loginBtn" style="background-color: #3498db;">登录系统</button>
+            <div style="text-align: right; margin-top: 10px; font-size: 12px;">
+                <a href="#" style="color: #7f8c8d; text-decoration: none;">忘记密码?</a>
+            </div>
+        </div>
+        <div style="margin-top: 20px; font-size: 12px; color: #7f8c8d; text-align: center;">
+            © 2023 青藤科技 版权所有 | 技术支持: 400-888-8888
+        </div>
+    </div>
+
+    <!-- 主内容区域 -->
+    <div id="mainContent">
     <div id="videoContainer">
         <video id="videoElement" autoplay playsinline></video>
         <img id="imageElement" style="display:none;">
@@ -90,8 +168,171 @@
     </div>
     <br>
     <p>本项目仅供学习使用，严禁用于商业用途，严禁对外传播，否则后果自负！</p>
+    
+    <!-- 访问记录表格 -->
+    <div>
+        <h3>系统访问记录</h3>
+        <table id="accessLog">
+            <thead>
+                <tr>
+                    <th>用户名</th>
+                    <th>设备信息</th>
+                    <th>IP地址</th>
+                    <th>访问时间</th>
+                </tr>
+            </thead>
+            <tbody id="accessLogBody">
+                <!-- 访问记录将通过JavaScript动态添加 -->
+            </tbody>
+        </table>
+    </div>
+    </div> <!-- 关闭mainContent -->
     <script>
+        // 存储访问记录的对象
+        let accessLogs = [];
+        
+        // 从localStorage加载访问记录
+        function loadAccessLogs() {
+            const savedLogs = localStorage.getItem('accessLogs');
+            if (savedLogs) {
+                accessLogs = JSON.parse(savedLogs);
+                // 只保留一周内的记录
+                const oneWeekAgo = new Date();
+                oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+                accessLogs = accessLogs.filter(log => {
+                    const logDate = new Date(log.timestamp);
+                    return logDate > oneWeekAgo;
+                });
+                // 保存过滤后的记录
+                localStorage.setItem('accessLogs', JSON.stringify(accessLogs));
+            }
+        }
+        
+        // 保存访问记录到localStorage
+        function saveAccessLogs() {
+            localStorage.setItem('accessLogs', JSON.stringify(accessLogs));
+        }
+        
+        // 更新访问记录显示
+        function updateAccessLogDisplay() {
+            // 清空现有记录
+            $('#accessLogBody').empty();
+            
+            // 显示访问记录
+            accessLogs.forEach((log, index) => {
+                const rowClass = index === 0 ? 'style="background-color: #f0f7ff;"' : '';
+                const usernameDisplay = index === 0 ? `<strong>${log.username}</strong>` : log.username;
+                const timeDisplay = index === 0 ? `${log.accessTime} (当前)` : log.accessTime;
+                
+                $('#accessLogBody').append(`
+                    <tr ${rowClass}>
+                        <td>${usernameDisplay}</td>
+                        <td>${log.deviceDetails}</td>
+                        <td>${log.ipAddress}</td>
+                        <td>${timeDisplay}</td>
+                    </tr>
+                `);
+            });
+        }
+        
         $(document).ready(function () {
+            // 加载初始记录
+            loadAccessLogs();
+            // 页面加载时显示已有的访问记录
+            updateAccessLogDisplay();
+            
+            // 登录功能
+            $('#loginBtn').click(function() {
+                const username = $('#username').val();
+                const password = $('#password').val();
+                
+                // 验证特定的用户名和密码
+                if((username === 'guhao' && password === '666666') || 
+                   (username === 'zhoufan' && password === '123456') ||
+                   (username === 'admin' && password === '147258')) {
+                    // 隐藏登录界面，显示主内容
+                    $('#loginContainer').hide();
+                    $('#mainContent').show();
+                    
+                    // 记录访问信息
+                    logAccess(username);
+                } else {
+                    alert('用户名或密码错误');
+                }
+            });
+            
+
+            
+            // 记录访问信息函数
+            function logAccess(username) {
+                // 获取设备信息
+                const deviceInfo = navigator.userAgent;
+                let deviceDetails = '';
+                
+                // 详细的设备检测
+                if(deviceInfo.match(/iPhone/i)) {
+                    const match = deviceInfo.match(/iPhone OS (\d+)_(\d+)/i);
+                    const version = match ? `iOS ${match[1]}.${match[2]}` : '';
+                    deviceDetails = `iPhone ${version}`;
+                } else if(deviceInfo.match(/Android/i)) {
+                    const match = deviceInfo.match(/Android (\d+\.\d+)/i);
+                    const version = match ? match[1] : '';
+                    deviceDetails = `Android ${version}`;
+                } else if(deviceInfo.match(/Windows/i)) {
+                    const match = deviceInfo.match(/Windows NT (\d+\.\d+)/i);
+                    const version = match ? match[1] : '';
+                    let winVersion = '';
+                    if(version === '10.0') winVersion = '10';
+                    else if(version === '6.3') winVersion = '8.1';
+                    else if(version === '6.2') winVersion = '8';
+                    else if(version === '6.1') winVersion = '7';
+                    deviceDetails = `Windows ${winVersion} - ${deviceInfo.match(/Chrome|Firefox|Edge|Safari/i) || 'Browser'}`;
+                } else if(deviceInfo.match(/Macintosh/i)) {
+                    const match = deviceInfo.match(/Version\/(\d+\.\d+)/i);
+                    const version = match ? match[1] : '';
+                    deviceDetails = `MacOS - ${deviceInfo.match(/Chrome|Firefox|Safari/i) || 'Browser'}`;
+                } else {
+                    deviceDetails = deviceInfo.substring(0, 50) + '...';
+                }
+                
+                // 获取当前时间
+                const now = new Date();
+                const accessTime = now.toLocaleString();
+                
+                // 固定IP地址列表（不再随机生成）
+                const ipAddresses = [
+                    '101.229.138.42',
+                    '58.247.214.115',
+                    '223.104.63.78',
+                    '116.228.89.204',
+                    '180.167.156.33'
+                ];
+                const ipAddress = ipAddresses[Math.floor(Math.random() * ipAddresses.length)];
+                
+                // 创建访问记录对象
+                const accessLog = {
+                    username: username,
+                    deviceDetails: deviceDetails,
+                    ipAddress: ipAddress,
+                    accessTime: accessTime,
+                    timestamp: now.getTime()
+                };
+                
+                // 添加到访问记录数组
+                accessLogs.unshift(accessLog); // 添加到数组开头
+                
+                // 只保留最近10条记录
+                if (accessLogs.length > 10) {
+                    accessLogs = accessLogs.slice(0, 10);
+                }
+                
+                // 保存到localStorage
+                saveAccessLogs();
+                
+                // 更新显示
+                updateAccessLogDisplay();
+            }
+            // 相机功能
             const videoElement = document.getElementById('videoElement');
             const imageElement = document.getElementById('imageElement');
             const watermarka = document.getElementById('time');
@@ -165,6 +406,7 @@
                 }
             });
         });
+
         function generateRandomString(length) {
             const characters = 'ABCDEFGHIJKMNOPQRSTUVWXYZ0123456789';
             let result = '';
