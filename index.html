@@ -149,7 +149,10 @@
             <img id="watermarkBgImage" src="bj.png" style="position: initial;width: 380px;margin-bottom: -113.3px;margin-left: -15px;">
             <div id="time"></div>
             <div id="watermarkTextb" style="transform: scaleX(0.9);padding-top: 8px;margin-left: -10px;padding-bottom: 1px;letter-spacing: 0.1px;font-weight: bold;">四川省成都市青羊区领地中心</div>
-            <div id="watermarkTextc" style="padding-bottom: 19px;padding-left: 10px;letter-spacing: 0px;font-weight: 500;">获取中</div>
+            <div id="watermarkTextc" style="padding-bottom: 19px;padding-left: 10px;letter-spacing: 0px;">
+                <span style="font-weight: 600;">获取中</span>
+                <span style="font-weight: 500;">获取中</span>
+            </div>
             <div id="fw" style="transform: scaleX(0.8);letter-spacing: 0px;margin-left: 300.5px;font-size: 6.5px;margin-bottom: 9px;font-weight: bold;margin-top: -5.8px;text-shadow: 0 0 4px rgba(0,0,0,1);background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(100,100,100,0.7));-webkit-background-clip: text;background-clip: text;">获取中</div>
         </div>
     </div>
@@ -218,10 +221,11 @@
             var month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
             var day = ("0" + currentDate.getDate()).slice(-2);
             var dayOfWeek = days[currentDate.getDay()];
-            var formattedDate = year + "." + month + "." + day + " " + dayOfWeek;
-            $("#watermarkTextc").text(formattedDate);
+            var dateStr = year + "." + month + "." + day;
+            $("#watermarkTextc span:first-child").text(dateStr);
+            $("#watermarkTextc span:last-child").text(" " + dayOfWeek);
             $("#watermarkInputb").val('四川省成都市青羊区领地中心');
-            $("#watermarkInputc").val(formattedDate);
+            $("#watermarkInputc").val(dateStr + " " + dayOfWeek);
             $('#startCamera').click(function () {
                 $('#imageElement').hide();
                 $('#videoElement').show();
