@@ -101,6 +101,7 @@
             border-radius: 5px;
         }
         #time {
+            position: relative;
             background: linear-gradient(to bottom, #3366ff, #000022);
             -webkit-background-clip: text;
             background-clip: text;
@@ -109,9 +110,18 @@
             font-weight: 700;
             padding-left: 7.8px;
             transform: scaleX(0.8) translateY(-0.1em);
-            -webkit-text-stroke: 0.9px white;
-            paint-order: stroke fill;
-            -webkit-paint-order: stroke fill;
+            filter: drop-shadow(-0.15px 0 0 white)
+                    drop-shadow(0.5px 0 0 white)
+                    drop-shadow(0 -0.2px 0 white)
+                    drop-shadow(0 0.4px 0 white)
+                    drop-shadow(-0.1px -0.15px 0 white)
+                    drop-shadow(0.4px -0.15px 0 white)
+                    drop-shadow(-0.1px 0.3px 0 white)
+                    drop-shadow(0.4px 0.3px 0 white)
+                    drop-shadow(-0.08px 0 0 white)
+                    drop-shadow(0.3px 0 0 white)
+                    drop-shadow(0 -0.1px 0 white)
+                    drop-shadow(0 0.25px 0 white);
         }
         #times {
             padding-left: 3px;
