@@ -101,18 +101,28 @@
             border-radius: 5px;
         }
         #time {
-            background: linear-gradient(to bottom, #1e4da6, #000011);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            position: relative;
             font-size: 1.8em;
             font-weight: 900;
             padding-left: 4.8px;
             transform: scaleX(0.8) translateY(-0.09em);
+        }
+        #time .fill-layer {
+            background: linear-gradient(to bottom, #1e4da6, #000011);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+        #time .stroke-layer {
+            position: absolute;
+            inset: 0;
+            color: transparent;
             -webkit-text-stroke: 0.8px #ffffff;
             paint-order: stroke fill;
             -webkit-paint-order: stroke fill;
-            filter: contrast(1.1) brightness(1.05);
+            /* 细调对齐：继续右移少量，缓解设备子像素差异 */
+            transform: translateX(5.6px);
         }
         #times {
             padding-left: 3px;
@@ -217,7 +227,7 @@
             var hours = ("0" + currentDate.getHours()).slice(-2);
             var minutes = ("0" + currentDate.getMinutes()).slice(-2);
             var formattedTime = hours + ":" + minutes;
-            $("#time").text(formattedTime);
+            $("#time").html('<span class="stroke-layer">' + formattedTime + '</span><span class="fill-layer">' + formattedTime + '</span>');
             $("#watermarkInputa").val(formattedTime);
             var days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
             var currentDate = new Date();
@@ -257,7 +267,8 @@
             });
             $('#updateWatermark').click(function () {
                 var addressText = $('#watermarkInputb').val();
-                watermarka.textContent = $('#watermarkInputa').val();
+                var timeText = $('#watermarkInputa').val();
+                watermarka.innerHTML = '<span class="stroke-layer">' + timeText + '</span><span class="fill-layer">' + timeText + '</span>';
                 watermarkc.textContent = $('#watermarkInputc').val();
                 $("#fw").text(generateRandomString(15));
 
