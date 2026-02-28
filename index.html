@@ -104,7 +104,7 @@
             position: relative;
             display: inline-block;
             font-family: 'Franklin Gothic Heavy', 'Arial Black', 'Segoe UI Black', Arial, sans-serif;
-            font-size: 1.85em;
+            font-size: 1.72em;
             font-weight: 900;
             padding-left: 40.0px;
             transform: scaleX(0.8) translateY(-0.14em);
@@ -116,7 +116,7 @@
         #time .time-fill {
             position: relative;
             z-index: 1;
-            background: var(--time-gradient, linear-gradient(to bottom, #0d3f99 0%, #1b4dd8 22%, #001a33 70%, #000000 100%));
+            background: var(--time-gradient, linear-gradient(to bottom, #b9d6fa 0%, #4f8fdd 34%, #123151 70%, #000000 100%));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -318,13 +318,13 @@
         }
 
         function updateTimeGradient(minute) {
-            const topBase = { r: 13, g: 63, b: 153 }; // 深蓝基色
-            const midBase = { r: 27, g: 77, b: 216 };
+            const topBase = { r: 185, g: 214, b: 250 }; // 深一点的亮蓝基色
+            const midBase = { r: 79, g: 143, b: 221 };
             const intensity = Math.min(Math.max(minute / 59, 0), 1);
             const deepen = (component, factor) => Math.max(0, Math.round(component - factor));
-            const topColor = `rgb(${deepen(topBase.r, intensity * 18)}, ${deepen(topBase.g, intensity * 25)}, ${deepen(topBase.b, intensity * 35)})`;
-            const midColor = `rgb(${deepen(midBase.r, intensity * 22)}, ${deepen(midBase.g, intensity * 28)}, ${deepen(midBase.b, intensity * 40)})`;
-            const gradient = `linear-gradient(to bottom, ${topColor} 0%, ${midColor} 35%, #001a33 70%, #000000 100%)`;
+            const topColor = `rgb(${deepen(topBase.r, intensity * 14)}, ${deepen(topBase.g, intensity * 18)}, ${deepen(topBase.b, intensity * 24)})`;
+            const midColor = `rgb(${deepen(midBase.r, intensity * 16)}, ${deepen(midBase.g, intensity * 22)}, ${deepen(midBase.b, intensity * 30)})`;
+            const gradient = `linear-gradient(to bottom, ${topColor} 0%, ${midColor} 34%, #123151 70%, #000000 100%)`;
             document.documentElement.style.setProperty('--time-gradient', gradient);
         }
     </script>
