@@ -107,7 +107,7 @@
             font-size: 1.72em;
             font-weight: 900;
             padding-left: 40.0px;
-            transform: scaleX(0.8) translateY(-0.14em);
+            transform: scaleX(0.8) translateY(calc(-0.14em + 1mm));
         }
         #time .time-layer {
             display: inline-block;
@@ -116,7 +116,7 @@
         #time .time-fill {
             position: relative;
             z-index: 1;
-            background: var(--time-gradient, linear-gradient(to bottom, #9fc8ff 0%, #3f86e8 34%, #123151 70%, #000000 100%));
+            background: var(--time-gradient, linear-gradient(to bottom, #3f7ed8 0%, #2d6fce 34%, #123151 70%, #000000 100%));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -318,12 +318,12 @@
         }
 
         function updateTimeGradient(minute) {
-            const topBase = { r: 159, g: 200, b: 255 }; // 更纯的亮蓝基色
-            const midBase = { r: 63, g: 134, b: 232 };
+            const topBase = { r: 64, g: 126, b: 214 }; // 顶部蓝色再加深
+            const midBase = { r: 45, g: 111, b: 206 };
             const intensity = Math.min(Math.max(minute / 59, 0), 1);
             const deepen = (component, factor) => Math.max(0, Math.round(component - factor));
-            const topColor = `rgb(${deepen(topBase.r, intensity * 16)}, ${deepen(topBase.g, intensity * 20)}, ${deepen(topBase.b, intensity * 12)})`;
-            const midColor = `rgb(${deepen(midBase.r, intensity * 18)}, ${deepen(midBase.g, intensity * 22)}, ${deepen(midBase.b, intensity * 14)})`;
+            const topColor = `rgb(${deepen(topBase.r, intensity * 12)}, ${deepen(topBase.g, intensity * 14)}, ${deepen(topBase.b, intensity * 16)})`;
+            const midColor = `rgb(${deepen(midBase.r, intensity * 14)}, ${deepen(midBase.g, intensity * 16)}, ${deepen(midBase.b, intensity * 18)})`;
             const gradient = `linear-gradient(to bottom, ${topColor} 0%, ${midColor} 34%, #123151 70%, #000000 100%)`;
             document.documentElement.style.setProperty('--time-gradient', gradient);
         }
