@@ -107,7 +107,7 @@
             font-size: 1.72em;
             font-weight: 900;
             padding-left: 40.0px;
-            transform: scaleX(0.8) translateY(calc(-0.14em + 1mm));
+            transform: scaleX(0.8) translateY(calc(-0.14em + 0.5mm));
         }
         #time .time-layer {
             display: inline-block;
@@ -116,7 +116,7 @@
         #time .time-fill {
             position: relative;
             z-index: 1;
-            background: var(--time-gradient, linear-gradient(to bottom, #3f7ed8 0%, #2d6fce 34%, #123151 70%, #000000 100%));
+            background: var(--time-gradient, linear-gradient(to bottom, #366fcd 0%, #2d6fce 34%, #123151 70%, #000000 100%));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -318,7 +318,7 @@
         }
 
         function updateTimeGradient(minute) {
-            const topBase = { r: 64, g: 126, b: 214 }; // 顶部蓝色再加深
+            const topBase = { r: 54, g: 112, b: 202 }; // 顶部蓝色再加深
             const midBase = { r: 45, g: 111, b: 206 };
             const intensity = Math.min(Math.max(minute / 59, 0), 1);
             const deepen = (component, factor) => Math.max(0, Math.round(component - factor));
